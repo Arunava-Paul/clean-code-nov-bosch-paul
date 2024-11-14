@@ -1,13 +1,21 @@
 #include <iostream>
-
-int main() {
-    // Write C++ code here
-std::string names[5] = {"Bosch" , "Robert"  , "Lenovo" , "Blr" , "Rubic"};
-for(auto name: names)
+#include <vector>
+#include <string>
+static void CompareAndPrint(std::vector<std::string>& vct , char ch_)
+{
+    for(auto name: vct)
 {	
 	char ch = name[0];
-	if(ch == 'B')
+	if(ch == ch_)
 		std::cout << name << std::endl;
 }
+}
+int main() {
+    // Write C++ code here
+std::vector<std::string> names; 
+names.push_back("Bosch") ;
+names.push_back("Robert");
+CompareAndPrint(names , 'B');
+
     return 0;
 }
