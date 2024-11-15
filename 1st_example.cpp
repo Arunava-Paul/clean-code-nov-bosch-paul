@@ -1,21 +1,48 @@
 #include <iostream>
 #include <vector>
 #include <string>
-static void CompareAndPrint(std::vector<std::string>& vct , char ch_)
+
+bool ifStartsWith(const std::string& str , char ch)
 {
-    for(auto name: vct)
-{	
-	char ch = name[0];
-	if(ch == ch_)
-		std::cout << name << std::endl;
+    return (str.at(0) == ch);
 }
+
+bool ifEndsWith(const std::string& str, char ch)
+{
+    return (str.at(str.length()-1) == ch);
 }
+
+bool filtersting(std::vector<std::string>& ip_vct ,
+std::vector<std::string>& ot_vct, bool (*func)(const std::string& ,char), char check_char)
+{
+    bool ret = false;
+    for(auto elem: ip_vct)
+    {
+        if(func(elem , check_char))
+        {
+            ot_vct.push_back(elem);
+            ret = true;
+        }
+    }
+    return ret;
+}
+
 int main() {
     // Write C++ code here
-std::vector<std::string> names; 
+std::vector<std::string> names, filtered_names; 
 names.push_back("Bosch") ;
+names.push_back("Boot") ;
 names.push_back("Robert");
-CompareAndPrint(names , 'B');
+names.push_back("HUB");
+if(filtersting(names , filtered_names ,ifStartsWith , 'B' ))
+{
+    for(auto name :filtered_names )
+    {
+        std::cout << name << ",";
+    }
+}
+else
+    std::cout << "no names found";
 
     return 0;
 }
