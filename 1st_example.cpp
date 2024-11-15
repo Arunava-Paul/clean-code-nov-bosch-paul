@@ -1,24 +1,33 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <functional>
+using namespace std;
+using size_t = std::string::size_type;
 
-bool ifStartsWith(const std::string& str , char ch)
+function<bool(const string& str)> checkCharPredicateGenerator(char ch, size_t pos)
 {
-    return (str.at(0) == ch);
+    auto foo = [ch, pos](const string& str)->bool
+    {
+        return (str.at(pos) == ch);
+    };
+    return foo;
 }
 
-bool ifEndsWith(const std::string& str, char ch)
+function<bool(const string& str)> isPresentPredicateGenerator(string&& chkstr)
 {
-    return (str.at(str.length()-1) == ch);
+    auto foo = [chkstr](const string& str)->bool {
+        return (str == chkstr);
+    };
+    return foo;
 }
 
-bool filtersting(std::vector<std::string>& ip_vct ,
-std::vector<std::string>& ot_vct, bool (*func)(const std::string& ,char), char check_char)
+bool filterstring(std::vector<std::string>& ip_vct, std::vector<std::string>& ot_vct, const function<bool(const string&)>& func)
 {
     bool ret = false;
-    for(auto elem: ip_vct)
+    for (const auto& elem : ip_vct)
     {
-        if(func(elem , check_char))
+        if (func(elem))
         {
             ot_vct.push_back(elem);
             ret = true;
@@ -29,20 +38,45 @@ std::vector<std::string>& ot_vct, bool (*func)(const std::string& ,char), char c
 
 int main() {
     // Write C++ code here
-std::vector<std::string> names, filtered_names; 
-names.push_back("Bosch") ;
-names.push_back("Boot") ;
-names.push_back("Robert");
-names.push_back("HUB");
-if(filtersting(names , filtered_names ,ifStartsWith , 'B' ))
-{
-    for(auto name :filtered_names )
+    size_t pos = 0;
+    char letter = 'B';
+    function<bool(const std::string&)> startLetterCondition = checkCharPredicateGenerator(letter, pos);
+    
+    function<bool(const std::string&)> findStringCondition = isPresentPredicateGenerator("Boot");
+
+    std::vector<std::string> names, filtered_names; 
+    names.push_back("Bosch");
+    names.push_back("Boot");
+    names.push_back("Robert");
+    names.push_back("HUB");
+
+    if (filterstring(names, filtered_names, startLetterCondition))
     {
-        std::cout << name << ",";
+        for (auto name : filtered_names)
+        {
+            std::cout << name << ",";
+        }
     }
-}
-else
-    std::cout << "no names found";
+    else
+        std::cout << "no names found";
+    std::cout << endl; 
+    std::cout << "=============================="<<endl; 
+    filtered_names.resize(0);
+    if (filterstring(names, filtered_names, findStringCondition))
+    {
+        for (auto name : filtered_names)
+        {
+            std::cout << name << ",";
+        }
+    }
+    else
+        std::cout << "no names found";
 
     return 0;
 }
+
+
+
+
+
+
