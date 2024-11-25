@@ -64,20 +64,28 @@ class SpeedMonitor{
     Logger logger{};
     SpeedConverter _speedConverter{};
   public:
-          SpeedMonitor(int speedThreshold,BNFSpeedSensorInterface& speedSensor,
-          IOTCloudCommunicatorInterface& cloudCommunicator ): _speedThreshold{speedThreshold} , _speedSensor{speedSensor},
+          SpeedMonitor(int speedThreshold, int minspeed ,int maxspeed , BNFSpeedSensorInterface& speedSensor,
+          IOTCloudCommunicatorInterface& cloudCommunicator ): _speedThreshold{speedThreshold} ,
+          __minSpeed{minspeed}, _maxSpeed{maxspeed}, _speedSensor{speedSensor},
           _cloudCommunicator{cloudCommunicator} {}
 
           int getSpeedThreshold(){
             return _speedThreshold;
           }
-
+          void setSpeedThreshold(int speedThreshold){
+            _speedThreshold = speedThreshold;
+          }
           int getMinSpeed(){
             return _minSpeed;
           }
-
+          void setMinSpeed(int minSpeed){
+            _minSpeed = minSpeed;
+          }
           int getMaxSpeed(){
             return _maxSpeed;
+          }
+          void setMaxSpeed(int maxSpeed){
+            _maxSpeed = maxSpeed;
           }
 
           void monitor(){
@@ -104,7 +112,7 @@ class SpeedMonitor{
 int main(){
   BNFSpeedSensor speedSensorInstance;
   IOTCloudCommunicator cloudCommuniccator;
-  SpeedMonitor instance {10 , speedSensorInstance, cloudCommunicator};
+  SpeedMonitor instance {10 . 0 ,40 , speedSensorInstance, cloudCommunicator};
   instance.monitor();
   instance.monitor();
   instance.monitor();
