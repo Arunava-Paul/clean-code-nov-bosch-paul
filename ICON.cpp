@@ -1,5 +1,17 @@
 #include <iostream>
 
+class Logger {
+public:
+    template <typename T>
+    Logger& operator<<(const T& message) {
+        std::cout << message;
+        return *this;
+    }
+
+};
+
+
+
 class Icon {
 protected:
     float speed, glow, energy;
