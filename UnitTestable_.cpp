@@ -46,7 +46,7 @@ public:
 
 class SpeedConverter{
     public:
-        SpeedMonitor(int speedThreshold): _speedThreshold{speedThreshold} {}
+        SpeedConverter() {}
 
         double kmphToMph(int kmph){
             return kmph * 0.621371;
