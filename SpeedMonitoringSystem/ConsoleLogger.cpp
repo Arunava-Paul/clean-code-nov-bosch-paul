@@ -1,9 +1,10 @@
 #include "ILogger.h"
-class ConsoleLogger : public ILoggerInterface
-{
+#include <iostream>
+
+class ConsoleLogger : public ILoggerInterface {
 public:
     template <typename T>
-    void write(const T& message) override{
-        std::cout << message;
+    void write(const T& message) override {
+        std::cout << message << std::endl;
     }
 };
